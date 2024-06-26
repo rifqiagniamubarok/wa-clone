@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import PassedRoute from '@/utils/PassedRoute';
 import { signIn } from 'next-auth/react';
 import React, { useState } from 'react';
 
@@ -43,4 +44,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default PassedRoute(Login);
