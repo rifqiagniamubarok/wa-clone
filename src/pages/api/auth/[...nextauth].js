@@ -1,6 +1,8 @@
 import NextAuth from 'next-auth';
 import GithubProvider from 'next-auth/providers/github';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import prisma from '@/lib/prisma';
+import bcrypt from 'bcryptjs';
 
 export const authOptions = {
   // Configure one or more authentication providers
@@ -12,8 +14,15 @@ export const authOptions = {
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials, req) {
-        if (credentials.email != 'admin@admin.com' || credentials.password != 'adminadmin') {
-          throw new Error('Login failed');
+        const { email, password } = credentials;
+        const getUser = await prisma.user.findUnique({ where: { email } });
+        if (!getUser) {
+          throw new Error('Email or password wrong');
+        }
+
+        const isPasswordValid = await bcrypt.compare(password, getUser.password);
+        if (!isPasswordValid) {
+          throw new Error('Email or password wrong');
         }
 
         const user = { email: 'admin@admin.com', type: 'admin' };

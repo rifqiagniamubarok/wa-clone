@@ -3,6 +3,7 @@ import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import PassedRoute from '@/utils/PassedRoute';
 import { signIn } from 'next-auth/react';
+import Link from 'next/link';
 import React, { useState } from 'react';
 
 const Login = () => {
@@ -36,6 +37,9 @@ const Login = () => {
             <p>{error}</p>
             <Input type="email" placeholder="Enter email" value={email} onChange={({ target: { value } }) => setEmail(value)} />
             <Input type="password" placeholder="Enter password" value={password} onChange={({ target: { value } }) => setPassword(value)} />
+            <p>
+              <Link href={'/register'}>Register here</Link>
+            </p>
             <Button type="submit">Login</Button>
           </div>
         </form>
