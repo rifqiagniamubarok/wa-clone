@@ -9,11 +9,15 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@prisma/client": "^5.16.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "axios": "^1.7.2",
+    "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",
     "classnames": "^2.5.1",
     "clsx": "^2.1.1",
     "dayjs": "^1.11.11",
+    "joi": "^17.13.3",
     "lucide-react": "^0.396.0",
     "next": "14.2.4",
     "next-auth": "^4.24.7",
