@@ -1,4 +1,5 @@
 import BubbleChat from '@/components/atoms/BubbleChat';
+import dayjs from 'dayjs';
 import { useEffect, useState, useRef } from 'react';
 import { io } from 'socket.io-client';
 
@@ -42,8 +43,8 @@ const Chat = () => {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (username) {
-      socketRef.current.emit('send_message', { room, message, sender: username });
+    if (username && message) {
+      socketRef.current.emit('send_message', { room, message, sender: username, date: dayjs(new Date()) });
       setMessage('');
     }
   };
@@ -113,7 +114,7 @@ const Chat = () => {
         </div>
         <div className="py-4 px-2 border space-y-2 max-h-[400px] min-h-[400px] overflow-y-auto relative bg-[#efeae2] ">
           {messages.map((msg, index) => (
-            <BubbleChat key={index} message={msg.message} sender={msg.sender} username={msg.username} />
+            <BubbleChat key={index} message={msg.message} sender={msg.sender} username={msg.username} date={msg.date} />
           ))}
           <div ref={messagesEndRef} />
         </div>
