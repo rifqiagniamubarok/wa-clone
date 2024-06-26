@@ -19,11 +19,14 @@ const Chat = () => {
   const [message, setMessage] = useState('');
   const [room, setRoom] = useState('test');
   const [roomInput, setRoomInput] = useState('test');
+
   const [username, setUsername] = useState('');
   const [usernameInput, setUsernameInput] = useState('');
+
   const [messages, setMessages] = useState([]);
   const socketRef = useRef();
   const messagesEndRef = useRef(null);
+  const [isConnected, setIsConnected] = useState(false);
 
   useEffect(() => {
     setUsername(generateString(4));
@@ -32,6 +35,14 @@ const Chat = () => {
   useEffect(() => {
     socketRef.current = io('http://localhost:3550');
     socketRef.current.emit('join_room', room);
+    socketRef.current.on('connect', () => {
+      setIsConnected(true);
+      socketRef.current.emit('join_room', room);
+    });
+    socketRef.current.on('disconnect', () => {
+      setIsConnected(false);
+    });
+
     socketRef.current.on('receive_message', (data) => {
       getMessage(data, username);
     });
@@ -43,7 +54,7 @@ const Chat = () => {
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (username && message) {
+    if (username && message && isConnected) {
       socketRef.current.emit('send_message', { room, message, sender: username, date: dayjs(new Date()) });
       setMessage('');
     }
@@ -81,6 +92,7 @@ const Chat = () => {
     <div className="w-screen h-screen bg-white">
       <div className="w-1/3 space-y-4">
         <div>
+          <div>Status: {isConnected ? 'Connected' : 'Disconnected'}</div>
           <div>Username: {username}</div>
           <form onSubmit={handleChangeName}>
             <div className="flex items-center gap-2">
