@@ -11,6 +11,7 @@
   "dependencies": {
     "@prisma/client": "^5.16.0",
     "@radix-ui/react-slot": "^1.1.0",
+    "avvvatars-react": "^0.4.2",
     "axios": "^1.7.2",
     "bcryptjs": "^2.4.3",
     "class-variance-authority": "^0.7.0",

@@ -25,7 +25,7 @@ export const authOptions = {
           throw new Error('Email or password wrong');
         }
 
-        const user = { email: 'admin@admin.com', type: 'admin' };
+        const user = { id: Number(getUser.id), name: getUser.name, email: getUser.email, type: 'admin' };
         return user;
       },
     }),
@@ -37,12 +37,12 @@ export const authOptions = {
       } else if (user) {
         token.accessToken = user.token; // CredentialsProvider
       }
-      console.log({ user });
 
       return token;
     },
     async session({ session, token }) {
       session.accessToken = token.accessToken;
+      session.user.id = token.sub;
       console.log({ session, token: token });
       return session;
     },

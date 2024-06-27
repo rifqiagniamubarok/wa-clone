@@ -5,7 +5,7 @@ import { MessageSquareText } from 'lucide-react';
 import { signOut } from 'next-auth/react';
 
 const Home = () => {
-  return <ChatLayout>test</ChatLayout>;
+  return <ChatLayout className={''}></ChatLayout>;
 };
 
 export default ProtectedRoute(Home);
