@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@prisma/client": "^5.16.0",
+    "@radix-ui/react-popover": "^1.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "avvvatars-react": "^0.4.2",
     "axios": "^1.7.2",
