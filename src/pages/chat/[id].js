@@ -68,7 +68,8 @@ const ChatDetail = () => {
   const handleSendMessage = (e) => {
     e.preventDefault();
     if (message && isConnected) {
-      socketRef.current.emit('send_message', { room: router.query.id, message, sender: user.name, date: dayjs(new Date()), userId: user.id });
+      const payload = { room: router.query.id, message, sender: user.name, date: dayjs(new Date()), userId: user.id };
+      socketRef.current.emit('send_message', payload);
       setMessage('');
     }
   };

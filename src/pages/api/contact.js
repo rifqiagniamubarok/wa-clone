@@ -16,35 +16,47 @@ const handlerGet = async (req, res, session) => {
   try {
     const { user } = session;
     const userId = Number(user.id);
-    const getRoom = await prisma.user.findUnique({
+    const getRoom = await prisma.room.findMany({
       where: {
-        id: userId,
+        userRoom: {
+          some: {
+            userId,
+          },
+        },
       },
       include: {
-        userRoom: true,
+        userRoom: {
+          where: {
+            userId: {
+              not: userId,
+            },
+          },
+        },
       },
     });
 
-    const getUserRoomId = getRoom.userRoom.map(({ roomId }) => {
-      return roomId;
+    const idHaveChats = getRoom.map(({ userRoom }) => {
+      return { id: userRoom[0].userId, roomId: userRoom[0].roomId };
     });
 
-    const getUsers = await prisma.user.findMany({
-      where: { id: { not: userId } },
-      include: {
-        userRoom: true,
+    const getUser = await prisma.user.findMany({
+      select: {
+        password: false,
+        name: true,
+        id: true,
       },
     });
 
-    const users = getUsers.map((item) => {
-      const isHasRoom = getUserRoomId.includes(item?.userRoom[0]?.roomId) || false;
+    const contacs = getUser.map(({ name, id }) => {
+      const chat = idHaveChats.find((x) => x.id == id);
       return {
-        ...item,
-        isHasRoom,
+        name,
+        id,
+        chat: chat || false,
       };
     });
-    console.log({ users });
-    return res.status(200).json({ message: 'success', data: users });
+
+    return res.status(200).json({ message: 'success', data: contacs });
   } catch (error) {
     res.status(500).json({ message: 'Internal serverl error', error });
   }

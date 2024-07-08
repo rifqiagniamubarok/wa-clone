@@ -32,9 +32,9 @@ const SideNav = ({ page = 'chat', chats }) => {
           <div className="p-4 text-xl text-emerald-600">Users</div>
           <div className="w-full ">
             {users.map((item, index) => {
-              const { name, id, isHasRoom, userRoom } = item;
+              const { name, id, chat } = item;
               return (
-                <Link href={isHasRoom ? `/chat/${userRoom[0].roomId}` : `/chat/newChat/${id}`}>
+                <Link href={chat ? `/chat/${chat.roomId}` : `/chat/newChat/${id}`}>
                   <div key={index} className="px-4 hover:bg-gray-100 cursor-pointer">
                     <div className="w-full h-[1px] bg-emerald-600 bg-opacity-50"></div>
                     <div className="flex items-center gap-4 py-4">

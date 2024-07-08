@@ -24,6 +24,7 @@ const ChatLayout = ({ children, className }) => {
     socketRef.current = io('http://localhost:3550');
     socketRef.current.emit('ask_users', { userId: data?.user?.id });
     socketRef.current.on('receive_users', (data) => {
+      console.log({ data });
       setChats(data?.rooms);
     });
     socketRef.current.on('connect', () => {
@@ -36,7 +37,6 @@ const ChatLayout = ({ children, className }) => {
       socketRef.current.disconnect();
     };
   }, [data]);
-  console.log({ chats });
 
   return (
     <div className="w-screen h-screen flex">
